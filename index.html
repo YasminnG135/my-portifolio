@@ -5,24 +5,98 @@
     <link rel="stylesheet" href="/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfólio - Yasmin Gonçalves Santos</title>
+    <style>
+      .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto 10px;
+        object-fit: cover;
+      }
+      .stars {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+      }
+      .stars span {
+        cursor: pointer;
+        color: #ccc;
+      }
+      .stars span:hover,
+      .stars span.active {
+        color: gold;
+      }
+      .stars span:hover ~ span,
+      .stars span.active ~ span {
+        color: #ccc;
+      }
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 192, 203, 0.9);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 1000;
+      }
+      .overlay-content {
+        text-align: center;
+        font-size: 48px;
+        color: white;
+      }
+      .overlay-content p {
+        margin: 10px 0;
+      }
+      .overlay-content .stars-display {
+        font-size: 36px;
+      }
+      .close-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
   </head>
   <body>
+    <div class="stars" id="stars">
+      <span data-value="5">⭐</span>
+      <span data-value="4">⭐</span>
+      <span data-value="3">⭐</span>
+      <span data-value="2">⭐</span>
+      <span data-value="1">⭐</span>
+    </div>
+    <div class="overlay" id="overlay">
+      <div class="overlay-content">
+        <p id="rating-number"></p>
+        <p id="rating-stars" class="stars-display"></p>
+        <button class="close-btn" id="close-overlay">Fechar</button>
+      </div>
+    </div>
     <header>
+      <img src="src/assets/yasmin.png" alt="Foto de Perfil de Yasmin Gonçalves Santos" class="profile-pic">
       <h1>Yasmin Gonçalves Santos</h1>
       <nav>
         <a href="#sobre">Objetivo</a>
         <a href="#projetos">Projetos</a>
-        <a href="#contato">Contato</a>
       </nav>
     </header>
 
     <main>
       <section id="sobre">
         <h2>Objetivo</h2>
-        <p>Busco uma oportunidade para aplicar meus conhecimentos , desenvolver
+        <p>Busco uma oportunidade para aplicar meus conhecimentos, desenvolver</p>
         <p>habilidades e contribuir para os resultados da empresa com responsabilidade</p>
         <p>e comprometimento.</p>
-        <section id="sobre">
 
         <div class="projeto">
           <button class="toggle">💝 Informações Pessoais</button>
@@ -40,38 +114,35 @@
           <div class="conteudo">
             <ul>
               <li>Cursando Ensino Médio Técnico em Desenvolvimento de Sistema - E.E Manoel Ignácio da Silva </li>
-             
-                <li>Ensino Fundamental ll - E.E Manoel Ignácio da Silva - Dez/2022 </li>
+              <li>Ensino Fundamental ll - E.E Manoel Ignácio da Silva - Dez/2022 </li>
               <li>Ensino Fundamental ll - Colégio 1 Mundo - Dez/2021</li>
               <li>Ensino Fundamental l - Patricia Maria Capellato Basso - Dez/2018</li>
             </ul>
           </div>
         </div>
         
-          <div class="projeto">
-            <button class="toggle">💗 Habilidades e Competências</button>
-            <div class="conteudo">
-              <ul>
-                <li>Administração, Marketing, Informática</li>
-                <li>Proatividade, Inovação, Networking</li>
-              </ul>
-            </div>
+        <div class="projeto">
+          <button class="toggle">💗 Habilidades e Competências</button>
+          <div class="conteudo">
+            <ul>
+              <li>Administração, Marketing, Informática</li>
+              <li>Proatividade, Inovação, Networking</li>
+            </ul>
           </div>
+        </div>
         
-          <div class="projeto">
-            <button class="toggle">💞 Experiência Profissional</button>
-            <div class="conteudo">
-              <ul>
-                <li>Medicar Emergências Médicas</li>
-                  <li>Aprendiz - Auxiliar administrativo</li>
-                    <li>Dez/2024(Em andamento)</li> 
-              </ul>
-            </div>
+        <div class="projeto">
+          <button class="toggle">💞 Experiência Profissional</button>
+          <div class="conteudo">
+            <ul>
+              <li>Medicar Emergências Médicas</li>
+              <li>Aprendiz - Auxiliar administrativo</li>
+              <li>Dez/2024 (Em andamento)</li> 
+            </ul>
           </div>
-        </section>
-        
+        </div>
+      </section>
       
-
       <section id="projetos">
         <h2>Projetos</h2>
       
@@ -86,10 +157,35 @@
     </main>
 
     <footer>
-      <p>&copy; 2025 - Yasmin Gonçalves Santos</p>
+      <p>© 2025 - Yasmin Gonçalves Santos</p>
     </footer>
 
     <script type="module" src="/src/main.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const stars = document.querySelectorAll('#stars span');
+        const overlay = document.getElementById('overlay');
+        const ratingNumber = document.getElementById('rating-number');
+        const ratingStars = document.getElementById('rating-stars');
+        const closeOverlay = document.getElementById('close-overlay');
+
+        stars.forEach(star => {
+          star.addEventListener('click', () => {
+            const rating = parseInt(star.getAttribute('data-value'));
+            stars.forEach(s => s.classList.remove('active'));
+            for (let i = stars.length - 1; i >= stars.length - rating; i--) {
+              stars[i].classList.add('active');
+            }
+            ratingNumber.textContent = rating;
+            ratingStars.textContent = '⭐'.repeat(rating);
+            overlay.style.display = 'flex';
+          });
+        });
+
+        closeOverlay.addEventListener('click', () => {
+          overlay.style.display = 'none';
+        });
+      });
+    </script>
   </body>
 </html>
- 
